@@ -3,6 +3,9 @@ package com.codelapp.app
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -124,8 +127,15 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
     var expanded by rememberSaveable { mutableStateOf(false) } // crea la persistencia de los estados
 
 
-    val extraPadding = if (expanded) 48.dp else 0.dp
+    //val extraPadding = if (expanded) 48.dp else 0.dp
 
+    val extraPadding by animateDpAsState(
+        if (expanded) 148.dp else 0.dp, //Animacion normal
+        animationSpec = spring( //Animacion de resorte
+            dampingRatio = Spring.DampingRatioMediumBouncy,
+            stiffness = Spring.StiffnessLow
+        )
+    )
     Surface(
         color = MaterialTheme.colorScheme.primary,
         modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
